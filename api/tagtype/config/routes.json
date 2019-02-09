@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/tagtypes",
+      "handler": "Tagtype.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/tagtypes/count",
+      "handler": "Tagtype.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/tagtypes/:id",
+      "handler": "Tagtype.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/tagtypes",
+      "handler": "Tagtype.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/tagtypes/:id",
+      "handler": "Tagtype.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/tagtypes/:id",
+      "handler": "Tagtype.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

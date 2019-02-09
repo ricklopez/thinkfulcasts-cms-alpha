@@ -1,0 +1,68 @@
+{
+  "connection": "default",
+  "collectionName": "video",
+  "info": {
+    "name": "video",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "default": "",
+      "maxLength": 150,
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 250,
+      "type": "text"
+    },
+    "start": {
+      "default": "",
+      "type": "integer"
+    },
+    "created_date": {
+      "default": "",
+      "type": "date"
+    },
+    "stats": {
+      "default": "",
+      "type": "json"
+    },
+    "published": {
+      "default": false,
+      "type": "boolean"
+    },
+    "location_url": {
+      "default": "",
+      "unique": true,
+      "type": "string"
+    },
+    "location": {
+      "default": "",
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "local",
+        " s3",
+        " youtube",
+        " zoom",
+        " vimeo",
+        " other"
+      ]
+    },
+    "lesson": {
+      "model": "lesson",
+      "via": "video"
+    },
+    "tags": {
+      "collection": "tag",
+      "via": "videos",
+      "dominant": true
+    }
+  }
+}

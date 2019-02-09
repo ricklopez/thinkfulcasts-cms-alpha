@@ -1,0 +1,47 @@
+{
+  "connection": "default",
+  "collectionName": "lessons",
+  "info": {
+    "name": "lesson",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "default": "",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "video_url": {
+      "default": "",
+      "type": "string"
+    },
+    "recorded": {
+      "default": false,
+      "type": "boolean"
+    },
+    "assets": {
+      "collection": "asset",
+      "via": "lesson"
+    },
+    "section": {
+      "model": "section",
+      "via": "lessons"
+    },
+    "priority": {
+      "default": "",
+      "type": "integer"
+    },
+    "video": {
+      "model": "video",
+      "via": "lesson"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "connection": "default",
+  "collectionName": "tagtype",
+  "info": {
+    "name": "tagtype",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "default": "",
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    }
+  }
+}

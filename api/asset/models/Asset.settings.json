@@ -1,0 +1,38 @@
+{
+  "connection": "default",
+  "collectionName": "assets",
+  "info": {
+    "name": "asset",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "default": "",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "url": {
+      "default": "",
+      "type": "text"
+    },
+    "assettype": {
+      "model": "assettype"
+    },
+    "lesson": {
+      "model": "lesson",
+      "via": "assets"
+    },
+    "course": {
+      "model": "course",
+      "via": "assets"
+    }
+  }
+}

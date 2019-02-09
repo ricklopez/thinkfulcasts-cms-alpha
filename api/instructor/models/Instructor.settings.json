@@ -1,0 +1,70 @@
+{
+  "connection": "default",
+  "collectionName": "instructors",
+  "info": {
+    "name": "instructor",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "first_name": {
+      "default": "",
+      "type": "string"
+    },
+    "last_name": {
+      "default": "",
+      "type": "string"
+    },
+    "social": {
+      "default": "",
+      "type": "json"
+    },
+    "stats": {
+      "default": "",
+      "type": "json"
+    },
+    "profile_image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "background_image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "body": {
+      "default": "",
+      "type": "text"
+    },
+    "active": {
+      "default": false,
+      "type": "boolean"
+    },
+    "capabilities": {
+      "default": "",
+      "type": "enumeration",
+      "enum": [
+        "Data Science",
+        " Developer",
+        " Design",
+        " Data Analytics",
+        " Student Success"
+      ]
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
+    }
+  }
+}

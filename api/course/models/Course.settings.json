@@ -1,0 +1,86 @@
+{
+  "connection": "default",
+  "collectionName": "courses",
+  "info": {
+    "name": "course",
+    "description": "Course is the base type of any live, video or any other asset intended t provide users learning content via video, or live stream. "
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "default": "",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "body": {
+      "default": "",
+      "type": "text"
+    },
+    "status": {
+      "enum": [
+        "published",
+        " pending",
+        " draft",
+        " flagged"
+      ],
+      "default": "",
+      "type": "enumeration"
+    },
+    "next_live_date": {
+      "default": "",
+      "type": "date"
+    },
+    "published_date": {
+      "default": "",
+      "type": "date"
+    },
+    "cover_image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "main_url": {
+      "default": "",
+      "type": "string"
+    },
+    "stats": {
+      "default": "",
+      "type": "json"
+    },
+    "instructor": {
+      "model": "instructor"
+    },
+    "sections": {
+      "collection": "section",
+      "via": "course"
+    },
+    "assets": {
+      "collection": "asset",
+      "via": "course"
+    },
+    "categories": {
+      "collection": "tag",
+      "dominant": true,
+      "via": "courses"
+    },
+    "type": {
+      "default": "",
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "live",
+        " recording",
+        " course",
+        " other"
+      ]
+    }
+  }
+}

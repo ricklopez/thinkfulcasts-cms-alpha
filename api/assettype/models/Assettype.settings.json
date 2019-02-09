@@ -1,0 +1,23 @@
+{
+  "connection": "default",
+  "collectionName": "assettypes",
+  "info": {
+    "name": "assettype",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "default": "",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    }
+  }
+}

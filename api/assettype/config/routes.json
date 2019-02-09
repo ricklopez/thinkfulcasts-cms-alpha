@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/assettypes",
+      "handler": "Assettype.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/assettypes/count",
+      "handler": "Assettype.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/assettypes/:id",
+      "handler": "Assettype.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/assettypes",
+      "handler": "Assettype.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/assettypes/:id",
+      "handler": "Assettype.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/assettypes/:id",
+      "handler": "Assettype.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -19,6 +19,7 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "dependencies": {
+    "@sailshq/lodash": "^3.10.3",
     "dotenv": "^6.2.0",
     "knex": "latest",
     "lodash": "^4.17.5",

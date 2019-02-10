@@ -25,7 +25,8 @@
     "lodash": "^4.17.5",
     "strapi": "3.0.0-alpha.22",
     "strapi-hook-knex": "3.0.0-alpha.22",
-    "strapi-hook-mongoose": "^3.0.0-alpha.13"
+    "strapi-hook-mongoose": "^3.0.0-alpha.13",
+    "stream-to-observable": "^0.2.0"
   },
   "author": {
     "name": "cabox",

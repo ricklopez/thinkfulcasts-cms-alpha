@@ -22,10 +22,7 @@
     "dotenv": "^6.2.0",
     "knex": "latest",
     "lodash": "^4.17.5",
-    "mysql": "^2.16.0",
-    "sqlite3": "4.0.6",
     "strapi": "3.0.0-alpha.22",
-    "strapi-hook-bookshelf": "3.0.0-alpha.22",
     "strapi-hook-knex": "3.0.0-alpha.22",
     "strapi-hook-mongoose": "^3.0.0-alpha.13"
   },

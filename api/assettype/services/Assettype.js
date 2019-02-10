@@ -1,8 +1,7 @@
-/* global Assettype */
 'use strict';
 
 /**
- * Assettype.js service
+ * Test.js service
  *
  * @description: A set of functions similar to controller's actions to avoid code duplication.
  */
@@ -10,234 +9,190 @@
 // Public dependencies.
 const _ = require('lodash');
 
-// Strapi utilities.
-const utils = require('strapi-hook-bookshelf/lib/utils/');
-
 module.exports = {
 
   /**
-   * Promise to fetch all assettypes.
+   * Promise to fetch all tests.
    *
    * @return {Promise}
    */
 
   fetchAll: (params) => {
-    // Convert `params` object to filters compatible with Bookshelf.
-    const filters = strapi.utils.models.convertParams('assettype', params);
+    // Convert `params` object to filters compatible with Mongo.
+    const filters = strapi.utils.models.convertParams('test', params);
     // Select field to populate.
-    const populate = Assettype.associations
+    const populate = Test.associations
       .filter(ast => ast.autoPopulate !== false)
-      .map(ast => ast.alias);
+      .map(ast => ast.alias)
+      .join(' ');
 
-    return Assettype.query(function(qb) {
-      _.forEach(filters.where, (where, key) => {
-        if (_.isArray(where.value) && where.symbol !== 'IN') {
-          for (const value in where.value) {
-            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
-          }
-        } else {
-          qb.where(key, where.symbol, where.value);
-        }
-      });
-
-      if (filters.sort) {
-        qb.orderBy(filters.sort.key, filters.sort.order);
-      }
-
-      qb.offset(filters.start);
-      qb.limit(filters.limit);
-    }).fetchAll({
-      withRelated: filters.populate || populate
-    });
+    return Test
+      .find()
+      .where(filters.where)
+      .sort(filters.sort)
+      .skip(filters.start)
+      .limit(filters.limit)
+      .populate(filters.populate || populate);
   },
 
   /**
-   * Promise to fetch a/an assettype.
+   * Promise to fetch a/an test.
    *
    * @return {Promise}
    */
 
   fetch: (params) => {
     // Select field to populate.
-    const populate = Assettype.associations
+    const populate = Test.associations
       .filter(ast => ast.autoPopulate !== false)
-      .map(ast => ast.alias);
+      .map(ast => ast.alias)
+      .join(' ');
 
-    return Assettype.forge(_.pick(params, 'id')).fetch({
-      withRelated: populate
-    });
+    return Test
+      .findOne(_.pick(params, _.keys(Test.schema.paths)))
+      .populate(populate);
   },
 
   /**
-   * Promise to count a/an assettype.
+   * Promise to count tests.
    *
    * @return {Promise}
    */
 
   count: (params) => {
-    // Convert `params` object to filters compatible with Bookshelf.
-    const filters = strapi.utils.models.convertParams('assettype', params);
+    // Convert `params` object to filters compatible with Mongo.
+    const filters = strapi.utils.models.convertParams('test', params);
 
-    return Assettype.query(function(qb) {
-      _.forEach(filters.where, (where, key) => {
-        if (_.isArray(where.value)) {
-          for (const value in where.value) {
-            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
-          }
-        } else {
-          qb.where(key, where.symbol, where.value);
-        }
-      });
-    }).count();
+    return Test
+      .countDocuments()
+      .where(filters.where);
   },
 
   /**
-   * Promise to add a/an assettype.
+   * Promise to add a/an test.
    *
    * @return {Promise}
    */
 
   add: async (values) => {
     // Extract values related to relational data.
-    const relations = _.pick(values, Assettype.associations.map(ast => ast.alias));
-    const data = _.omit(values, Assettype.associations.map(ast => ast.alias));
+    const relations = _.pick(values, Test.associations.map(ast => ast.alias));
+    const data = _.omit(values, Test.associations.map(ast => ast.alias));
 
     // Create entry with no-relational data.
-    const entry = await Assettype.forge(data).save();
+    const entry = await Test.create(data);
 
     // Create relational data and return the entry.
-    return Assettype.updateRelations({ id: entry.id , values: relations });
+    return Test.updateRelations({ _id: entry.id, values: relations });
   },
 
   /**
-   * Promise to edit a/an assettype.
+   * Promise to edit a/an test.
    *
    * @return {Promise}
    */
 
   edit: async (params, values) => {
     // Extract values related to relational data.
-    const relations = _.pick(values, Assettype.associations.map(ast => ast.alias));
-    const data = _.omit(values, Assettype.associations.map(ast => ast.alias));
+    const relations = _.pick(values, Test.associations.map(a => a.alias));
+    const data = _.omit(values, Test.associations.map(a => a.alias));
 
-    // Create entry with no-relational data.
-    const entry = Assettype.forge(params).save(data);
+    // Update entry with no-relational data.
+    const entry = await Test.updateOne(params, data, { multi: true });
 
-    // Create relational data and return the entry.
-    return Assettype.updateRelations(Object.assign(params, { values: relations }));
+    // Update relational data and return the entry.
+    return Test.updateRelations(Object.assign(params, { values: relations }));
   },
 
   /**
-   * Promise to remove a/an assettype.
+   * Promise to remove a/an test.
    *
    * @return {Promise}
    */
 
-  remove: async (params) => {
-    params.values = {};
-    Assettype.associations.map(association => {
-      switch (association.nature) {
-        case 'oneWay':
-        case 'oneToOne':
-        case 'manyToOne':
-        case 'oneToManyMorph':
-          params.values[association.alias] = null;
-          break;
-        case 'oneToMany':
-        case 'manyToMany':
-        case 'manyToManyMorph':
-          params.values[association.alias] = [];
-          break;
-        default:
-      }
-    });
+  remove: async params => {
+    // Select field to populate.
+    const populate = Test.associations
+      .filter(ast => ast.autoPopulate !== false)
+      .map(ast => ast.alias)
+      .join(' ');
 
-    await Assettype.updateRelations(params);
+    // Note: To get the full response of Mongo, use the `remove()` method
+    // or add spent the parameter `{ passRawResult: true }` as second argument.
+    const data = await Test
+      .findOneAndRemove(params, {})
+      .populate(populate);
 
-    return Assettype.forge(params).destroy();
+    if (!data) {
+      return data;
+    }
+
+    await Promise.all(
+      Test.associations.map(async association => {
+        if (!association.via || !data._id) {
+          return true;
+        }
+
+        const search = _.endsWith(association.nature, 'One') || association.nature === 'oneToMany' ? { [association.via]: data._id } : { [association.via]: { $in: [data._id] } };
+        const update = _.endsWith(association.nature, 'One') || association.nature === 'oneToMany' ? { [association.via]: null } : { $pull: { [association.via]: data._id } };
+
+        // Retrieve model.
+        const model = association.plugin ?
+          strapi.plugins[association.plugin].models[association.model || association.collection] :
+          strapi.models[association.model || association.collection];
+
+        return model.update(search, update, { multi: true });
+      })
+    );
+
+    return data;
   },
 
   /**
-   * Promise to search a/an assettype.
+   * Promise to search a/an test.
    *
    * @return {Promise}
    */
 
   search: async (params) => {
-    // Convert `params` object to filters compatible with Bookshelf.
-    const filters = strapi.utils.models.convertParams('assettype', params);
+    // Convert `params` object to filters compatible with Mongo.
+    const filters = strapi.utils.models.convertParams('test', params);
     // Select field to populate.
-    const populate = Assettype.associations
+    const populate = Test.associations
       .filter(ast => ast.autoPopulate !== false)
-      .map(ast => ast.alias);
+      .map(ast => ast.alias)
+      .join(' ');
 
-    const associations = Assettype.associations.map(x => x.alias);
-    const searchText = Object.keys(Assettype._attributes)
-      .filter(attribute => attribute !== Assettype.primaryKey && !associations.includes(attribute))
-      .filter(attribute => ['string', 'text'].includes(Assettype._attributes[attribute].type));
+    const $or = Object.keys(Test.attributes).reduce((acc, curr) => {
+      switch (Test.attributes[curr].type) {
+        case 'integer':
+        case 'float':
+        case 'decimal':
+          if (!_.isNaN(_.toNumber(params._q))) {
+            return acc.concat({ [curr]: params._q });
+          }
 
-    const searchNoText = Object.keys(Assettype._attributes)
-      .filter(attribute => attribute !== Assettype.primaryKey && !associations.includes(attribute))
-      .filter(attribute => !['string', 'text', 'boolean', 'integer', 'decimal', 'float'].includes(Assettype._attributes[attribute].type));
+          return acc;
+        case 'string':
+        case 'text':
+        case 'password':
+          return acc.concat({ [curr]: { $regex: params._q, $options: 'i' } });
+        case 'boolean':
+          if (params._q === 'true' || params._q === 'false') {
+            return acc.concat({ [curr]: params._q === 'true' });
+          }
 
-    const searchInt = Object.keys(Assettype._attributes)
-      .filter(attribute => attribute !== Assettype.primaryKey && !associations.includes(attribute))
-      .filter(attribute => ['integer', 'decimal', 'float'].includes(Assettype._attributes[attribute].type));
-
-    const searchBool = Object.keys(Assettype._attributes)
-      .filter(attribute => attribute !== Assettype.primaryKey && !associations.includes(attribute))
-      .filter(attribute => ['boolean'].includes(Assettype._attributes[attribute].type));
-
-    const query = (params._q || '').replace(/[^a-zA-Z0-9.-\s]+/g, '');
-
-    return Assettype.query(qb => {
-      // Search in columns which are not text value.
-      searchNoText.forEach(attribute => {
-        qb.orWhereRaw(`LOWER(${attribute}) LIKE '%${_.toLower(query)}%'`);
-      });
-
-      if (!_.isNaN(_.toNumber(query))) {
-        searchInt.forEach(attribute => {
-          qb.orWhereRaw(`${attribute} = ${_.toNumber(query)}`);
-        });
+          return acc;
+        default:
+          return acc;
       }
+    }, []);
 
-      if (query === 'true' || query === 'false') {
-        searchBool.forEach(attribute => {
-          qb.orWhereRaw(`${attribute} = ${_.toNumber(query === 'true')}`);
-        });
-      }
-
-      // Search in columns with text using index.
-      switch (Assettype.client) {
-        case 'mysql':
-          qb.orWhereRaw(`MATCH(${searchText.join(',')}) AGAINST(? IN BOOLEAN MODE)`, `*${query}*`);
-          break;
-        case 'pg': {
-          const searchQuery = searchText.map(attribute =>
-            _.toLower(attribute) === attribute
-              ? `to_tsvector(${attribute})`
-              : `to_tsvector('${attribute}')`
-          );
-
-          qb.orWhereRaw(`${searchQuery.join(' || ')} @@ to_tsquery(?)`, query);
-          break;
-        }
-      }
-
-      if (filters.sort) {
-        qb.orderBy(filters.sort.key, filters.sort.order);
-      }
-
-      if (filters.skip) {
-        qb.offset(_.toNumber(filters.skip));
-      }
-
-      if (filters.limit) {
-        qb.limit(_.toNumber(filters.limit));
-      }
-    }).fetchAll({
-      width: populate
-    });
+    return Test
+      .find({ $or })
+      .sort(filters.sort)
+      .skip(filters.start)
+      .limit(filters.limit)
+      .populate(populate);
   }
 };

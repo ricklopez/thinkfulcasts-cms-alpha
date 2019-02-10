@@ -20,13 +20,13 @@
   },
   "dependencies": {
     "@sailshq/lodash": "^3.10.3",
+    "@samverschueren/stream-to-observable": "^0.3.0",
     "dotenv": "^6.2.0",
     "knex": "latest",
     "lodash": "^4.17.5",
     "strapi": "3.0.0-alpha.22",
     "strapi-hook-knex": "3.0.0-alpha.22",
-    "strapi-hook-mongoose": "^3.0.0-alpha.13",
-    "stream-to-observable": "^0.2.0"
+    "strapi-hook-mongoose": "^3.0.0-alpha.13"
   },
   "author": {
     "name": "cabox",

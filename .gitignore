@@ -112,3 +112,5 @@ coverage
 # env
 ###########################
 .env
+
+package-lock.json
